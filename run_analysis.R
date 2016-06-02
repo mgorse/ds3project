@@ -15,6 +15,7 @@ cnames <- gsub("_$", "", cnames)
 
 activitylabels <- read.table("data/activity_labels.txt")
 activitylabels <- gsub("_", " ", activitylabels[,2]);
+activitylabels <- tolower(activitylabels)
 
 train<- read.table("data/train/X_train.txt")
 trainsubj <- read.table("data/train/subject_train.txt")
