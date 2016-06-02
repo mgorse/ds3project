@@ -7,6 +7,12 @@ library(dplyr)
 names_raw <- read.table("data/features.txt", stringsAsFactors = FALSE)
 # sanitize column names
 cnames <- gsub("-|\\(|\\)", "_", names_raw[,2])
+meancols <- grep("_mean__", cnames)
+stdcols <- grep("_std__", cnames)
+cnames <- gsub("__$", "", cnames)
+cnames <- gsub("___", "_", cnames)
+cnames <- gsub("_$", "", cnames)
+
 activitylabels <- read.table("data/activity_labels.txt")
 activitylabels <- gsub("_", " ", activitylabels[,2]);
 
@@ -24,10 +30,6 @@ colnames(test) = c(cnames, "subject", "activity")
 
 full <- rbind(train, test)
 
-meancols <- grep("_mean__", cnames)
-meancolnames <- grep("_mean__", cnames, value=TRUE)
-stdcols <- grep("_std__", cnames)
-stdcolnames <- grep("_std__", cnames, value=TRUE)
 
 sub <- full[c(meancols, stdcols)]
 subject <- full$subject
@@ -40,13 +42,4 @@ sub <- cbind(sub, activity)
 tbl <- tbl_df(sub)
 tbl <- group_by(tbl, subject, activity)
 
-means = data.frame()
-for (col in c(meancolnames, stdcolnames)) {
-	obname <- gsub("_", "", col)
-	obname <- sub("mean", "Mean", tabname)
-	obname <- sub("std", "Std", tabname)
-	eval(parse(text=paste0("tab <- summarize(tbl, mean(", col, "))")))
-	tab <- cbind(obname, tab)
-	colnames(tab) = c("observation", "subject", "activity", "mean")
-	means <- rbind(means, tab)
-}
+har_tidy <- summarize_each(tbl, funs(mean), grep("mean|std", colnames(sub)))
