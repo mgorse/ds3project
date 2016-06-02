@@ -3,12 +3,9 @@
 run_analysis.R will do the following:
 
 *   Read and merge the training and test sets
-*   Label activities using the labels from activitiy_labels.txt, replacing underscores with spaces
+*   Label activities using the labels from activitiy_labels.txt, downcasing and replacing underscores with spaces
 *   Extract features with "mean" or "std" in their name
-*   For each such observation, calculate the mean value for each subject and activity. Store these means in a table called "means"
+*   For each such observation, calculate the mean value for each subject and activity. Store these means in a table called "har_tidy"
+*   Write the table to a file called "har_tidy.txt"
 
-Means has the following columns:
-*   observation: the calculation from which the mean is taken.
-*   subject: a number from 1-30 corresponding to the research subject for which this observation was taken.
-*   activity: the activity that the subject was performing (walking, sitting, etc)
-*   mean: the arithmetic mean.
+har_tidy has columns indicating the subject and activity (sitting, walking upstairs, etc) along with additional columns for various observations. Each value contains the mean for the given observation over the given subject and activity.
