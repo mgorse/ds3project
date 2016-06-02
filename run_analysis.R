@@ -43,3 +43,4 @@ tbl <- tbl_df(sub)
 tbl <- group_by(tbl, subject, activity)
 
 har_tidy <- summarize_each(tbl, funs(mean), grep("mean|std", colnames(sub)))
+write.table(har_tidy, file="har_tidy.txt", row.names=FALSE)
